@@ -1,8 +1,3 @@
-/* Copyright (c) 2012-2017 LevelDOWN contributors
- * See list at <https://github.com/level/leveldown#contributing>
- * MIT License <https://github.com/level/leveldown/blob/master/LICENSE.md>
- */
-
 #include <rocksdb/db.h>
 
 #include "leveldown.h"
@@ -15,7 +10,7 @@ namespace leveldown {
 DestroyWorker::DestroyWorker (
     Nan::Utf8String* location
   , Nan::Callback *callback
-) : AsyncWorker(NULL, callback)
+) : AsyncWorker(NULL, callback, "rocksdb:destroy")
   , location(location)
 {};
 
@@ -33,7 +28,7 @@ void DestroyWorker::Execute () {
 RepairWorker::RepairWorker (
     Nan::Utf8String* location
   , Nan::Callback *callback
-) : AsyncWorker(NULL, callback)
+) : AsyncWorker(NULL, callback, "rocksdb:repair")
   , location(location)
 {};
 

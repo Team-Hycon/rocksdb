@@ -1,8 +1,3 @@
-/* Copyright (c) 2012-2017 LevelDOWN contributors
- * See list at <https://github.com/level/leveldown#contributing>
- * MIT License <https://github.com/level/leveldown/blob/master/LICENSE.md>
- */
-
 #ifndef LD_DATABASE_ASYNC_H
 #define LD_DATABASE_ASYNC_H
 
@@ -56,6 +51,7 @@ public:
   IOWorker (
       Database *database
     , Nan::Callback *callback
+    , const char *resource_name
     , rocksdb::Slice key
     , v8::Local<v8::Object> &keyHandle
   );
@@ -96,6 +92,7 @@ public:
     , rocksdb::Slice key
     , bool sync
     , v8::Local<v8::Object> &keyHandle
+    , const char *resource_name = "rocksdb:db.del"
   );
 
   virtual ~DeleteWorker ();

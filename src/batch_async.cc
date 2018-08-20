@@ -1,9 +1,3 @@
-/* Copyright (c) 2012-2017 LevelDOWN contributors
- * See list at <https://github.com/level/leveldown#contributing>
- * MIT License <https://github.com/level/leveldown/blob/master/LICENSE.md>
- */
-
-
 #include <rocksdb/write_batch.h>
 #include "batch.h"
 #include "batch_async.h"
@@ -15,7 +9,7 @@ namespace leveldown {
 BatchWriteWorker::BatchWriteWorker (
     Batch* batch
   , Nan::Callback *callback
-) : AsyncWorker(NULL, callback)
+) : AsyncWorker(NULL, callback, "rocksdb:batch.write")
   , batch(batch)
 {};
 

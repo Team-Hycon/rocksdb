@@ -1,8 +1,3 @@
-/* Copyright (c) 2012-2017 LevelDOWN contributors
- * See list at <https://github.com/level/leveldown#contributing>
- * MIT License <https://github.com/level/leveldown/blob/master/LICENSE.md>
- */
-
 #include <node.h>
 #include <node_buffer.h>
 
@@ -19,7 +14,7 @@ NextWorker::NextWorker (
     Iterator* iterator
   , Nan::Callback *callback
   , void (*localCallback)(Iterator*)
-) : AsyncWorker(NULL, callback)
+) : AsyncWorker(NULL, callback, "rocksdb:iterator.next")
   , iterator(iterator)
   , localCallback(localCallback)
 {};
@@ -74,7 +69,7 @@ void NextWorker::HandleOKCallback () {
     // when ok === false all data has been read, so it's then finished
     , Nan::New<v8::Boolean>(!ok)
   };
-  callback->Call(3, argv);
+  callback->Call(3, argv, async_resource);
 }
 
 /** END WORKER **/
@@ -82,7 +77,7 @@ void NextWorker::HandleOKCallback () {
 EndWorker::EndWorker (
     Iterator* iterator
   , Nan::Callback *callback
-) : AsyncWorker(NULL, callback)
+) : AsyncWorker(NULL, callback, "rocksdb:iterator.end")
   , iterator(iterator)
 {};
 
@@ -94,7 +89,7 @@ void EndWorker::Execute () {
 
 void EndWorker::HandleOKCallback () {
   iterator->Release();
-  callback->Call(0, NULL);
+  callback->Call(0, NULL, async_resource);
 }
 
 } // namespace leveldown

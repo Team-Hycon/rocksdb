@@ -1,8 +1,3 @@
-/* Copyright (c) 2012-2017 LevelDOWN contributors
- * See list at <https://github.com/level/leveldown#contributing>
- * MIT License <https://github.com/level/leveldown/blob/master/LICENSE.md>
- */
-
 #ifndef LD_ASYNC_H
 #define LD_ASYNC_H
 
@@ -19,7 +14,8 @@ public:
   AsyncWorker (
       leveldown::Database* database
     , Nan::Callback *callback
-  ) : Nan::AsyncWorker(callback), database(database) { }
+    , const char *resource_name
+  ) : Nan::AsyncWorker(callback, resource_name), database(database) { }
 
 protected:
   void SetStatus(rocksdb::Status status) {

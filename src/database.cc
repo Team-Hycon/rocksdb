@@ -1,8 +1,3 @@
-/* Copyright (c) 2012-2017 LevelDOWN contributors
- * See list at <https://github.com/level/leveldown#contributing>
- * MIT License <https://github.com/level/leveldown/blob/master/LICENSE.md>
- */
-
 #include <node.h>
 #include <node_buffer.h>
 
@@ -271,12 +266,8 @@ NAN_METHOD(Database::Close) {
           v8::Local<v8::Value> argv[] = {
               Nan::New<v8::FunctionTemplate>(EmptyMethod)->GetFunction() // empty callback
           };
-          Nan::MakeCallback(
-              iterator->handle()
-            , end
-            , 1
-            , argv
-          );
+          Nan::AsyncResource ar("rocksdb:iterator.end");
+          ar.runInAsyncScope(iterator->handle(), end, 1, argv);
         }
     }
   } else {
@@ -416,7 +407,7 @@ NAN_METHOD(Database::Batch) {
     worker->SaveToPersistent("database", _this);
     Nan::AsyncQueueWorker(worker);
   } else {
-    LD_RUN_CALLBACK(callback, 0, NULL);
+    LD_RUN_CALLBACK("rocksdb:db.batch", callback, 0, NULL);
   }
 }
 
