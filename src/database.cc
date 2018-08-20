@@ -202,7 +202,8 @@ NAN_METHOD(Database::Open) {
 
   database->blockCache = cacheSize ? rocksdb::NewLRUCache(cacheSize) :
                                      NULL;
-  database->filterPolicy = rocksdb::NewBloomFilterPolicy(10);
+  uint32_t bloomFilterBits = UInt32OptionValue(optionsObj, "bloomFilterBits", 10);
+  database->filterPolicy = rocksdb::NewBloomFilterPolicy(bloomFilterBits);
 
   OpenWorker* worker = new OpenWorker(
       database
