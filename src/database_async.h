@@ -25,6 +25,8 @@ public:
     , uint32_t maxOpenFiles
     , uint32_t blockRestartInterval
     , uint32_t maxFileSize
+    , uint32_t maxWriteBufferNumber
+    , uint32_t minWriteBufferNumberToMerge
   );
 
   virtual ~OpenWorker ();

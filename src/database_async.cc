@@ -36,6 +36,8 @@ OpenWorker::OpenWorker (
   , uint32_t maxOpenFiles
   , uint32_t blockRestartInterval
   , uint32_t maxFileSize
+  , uint32_t maxWriteBufferNumber
+  , uint32_t minWriteBufferNumberToMerge
 ) : AsyncWorker(database, callback, "rocksdb:db.open")
 {
   rocksdb::LevelDBOptions levelOptions;
@@ -60,6 +62,8 @@ OpenWorker::OpenWorker (
 
   options = new rocksdb::Options(rocksdb::ConvertOptions(levelOptions));
   options->max_log_file_size          = maxFileSize;
+  options->max_write_buffer_number    = maxWriteBufferNumber;
+  options->min_write_buffer_number_to_merge = minWriteBufferNumberToMerge;
 /*
   options = new rocksdb::Options();
   options->create_if_missing = levelOptions.create_if_missing;

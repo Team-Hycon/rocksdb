@@ -205,6 +205,9 @@ NAN_METHOD(Database::Open) {
   uint32_t bloomFilterBits = UInt32OptionValue(optionsObj, "bloomFilterBits", 10);
   database->filterPolicy = rocksdb::NewBloomFilterPolicy(bloomFilterBits);
 
+  uint32_t maxWriteBufferNumber = UInt32OptionValue(optionsObj, "maxWriteBufferNumber", 5);
+  uint32_t minWriteBufferNumberToMerge = UInt32OptionValue(optionsObj, "minWriteBufferNumberToMerge", 0);
+
   OpenWorker* worker = new OpenWorker(
       database
     , new Nan::Callback(callback)
@@ -218,6 +221,8 @@ NAN_METHOD(Database::Open) {
     , maxOpenFiles
     , blockRestartInterval
     , maxFileSize
+    , maxWriteBufferNumber
+    , minWriteBufferNumberToMerge
   );
   // persist to prevent accidental GC
   v8::Local<v8::Object> _this = info.This();
