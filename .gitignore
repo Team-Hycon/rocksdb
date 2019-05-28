@@ -1,7 +1,10 @@
+# When adding entries here, remember to also update `.npmignore`.
+
 node_modules/
 build/
 build-pre-gyp/
 Release/
+deps/*/Debug/
 libleveldb.so
 libleveldb.a
 leakydb
@@ -16,3 +19,4 @@ npm-debug.log
 prebuilds/
 yarn.lock
 package-lock.json
+.nyc_output/
