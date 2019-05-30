@@ -1,31 +1,40 @@
-const test = require('tape')
-const testCommon = require('./common')
+const test       = require('tape')
+    , testCommon = require('abstract-leveldown/testCommon')
+    , cleanup    = testCommon.cleanup
+    , location   = testCommon.location
+    , leveldown  = require('../')
 
 function makeTest (name, testFn) {
   test(name, function (t) {
-    var db = testCommon.factory()
-    var done = function (err, close) {
-      t.ifError(err, 'no error from done()')
-
-      if (close === false) {
-        t.end()
-        return
+    cleanup(function () {
+      var loc  = location()
+      var db   = leveldown(loc)
+      var done = function (close) {
+        if (close === false) {
+          cleanup(function (err) {
+            t.error(err, 'no error after cleanup')
+            t.end()
+          })
+          return
+        }
+        db.close(function (err) {
+          t.notOk(err, 'no error from close()')
+          cleanup(function (err) {
+            t.error(err, 'no error after cleanup')
+            t.end()
+          })
+        })
       }
-
-      db.close(function (err) {
-        t.ifError(err, 'no error from close()')
-        t.end()
-      })
-    }
-    db.open(function (err) {
-      t.ifError(err, 'no error from open()')
-      db.batch([
-        { type: 'put', key: 'one', value: '1' },
-        { type: 'put', key: 'two', value: '2' },
-        { type: 'put', key: 'three', value: '3' }
-      ], function (err) {
-        t.ifError(err, 'no error from batch()')
-        testFn(db, t, done)
+      db.open(function (err) {
+        t.notOk(err, 'no error from open()')
+        db.batch([
+          { type: 'put', key: 'one', value: '1' },
+          { type: 'put', key: 'two', value: '2' },
+          { type: 'put', key: 'three', value: '3' }
+        ], function (err) {
+          t.notOk(err, 'no error from batch()')
+          testFn(db, t, done, loc)
+        })
       })
     })
   })

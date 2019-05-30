@@ -28,6 +28,7 @@
         ['OS == "win"', {
             'include_dirs': [
                  'leveldb-<(ldbversion)/port/win/'
+            #  ,  'port-libuv/'
             ]
           , 'defines': [
                 'LEVELDB_PLATFORM_UV=1'
@@ -36,6 +37,9 @@
               , '_HAS_EXCEPTIONS=1'
             ]
           , 'sources': [
+            #    'port-libuv/port_uv.cc'
+            #  , 'port-libuv/env_win.cc'
+            #  , 'port-libuv/win_logger.cc'
                'leveldb-<(ldbversion)/port/win/port_win.cc'
              , 'leveldb-<(ldbversion)/port/win/io_win.cc'
              , 'leveldb-<(ldbversion)/port/win/xpress_win.cc'
