@@ -25,7 +25,6 @@
 #ifdef OS_LINUX
 #include <sys/statfs.h>
 #include <sys/syscall.h>
-#include <sys/sysmacros.h>
 #endif
 #include "port/port.h"
 #include "rocksdb/slice.h"
